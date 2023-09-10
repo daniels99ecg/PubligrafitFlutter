@@ -2,7 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pruebaone/page/prueba.dart';
 import 'package:pruebaone/page/sign_up_page.dart';
+import 'profile.dart';
 
 
 import '../firebase_options.dart';
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       // Remove the debug banner
       debugShowCheckedModeBanner: false,
-      title: 'CRUD Firebase',
+      title: 'Compras',
       home: HomePage(),
     );
   }
@@ -45,6 +47,8 @@ class _HomePageState extends State<HomePage> {
   // text fields' controllers
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
+    final TextEditingController _cantidadController = TextEditingController();
+
 
   final CollectionReference _productss =
       FirebaseFirestore.instance.collection('products');
@@ -58,6 +62,7 @@ class _HomePageState extends State<HomePage> {
       action = 'update';
       _nameController.text = documentSnapshot['name'];
       _priceController.text = documentSnapshot['price'].toString();
+      _cantidadController.text=documentSnapshot['cantidad'].toString();
     }
 
     await showModalBottomSheet(
@@ -87,6 +92,14 @@ class _HomePageState extends State<HomePage> {
                     labelText: 'Price',
                   ),
                 ),
+                  TextField(
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  controller: _cantidadController,
+                  decoration: const InputDecoration(
+                    labelText: 'Cantidad',
+                  ),
+                ),
                 const SizedBox(
                   height: 20,
                 ),
@@ -96,22 +109,25 @@ class _HomePageState extends State<HomePage> {
                     final String? name = _nameController.text;
                     final double? price =
                         double.tryParse(_priceController.text);
+                    final double? cantidad=
+                        double.tryParse(_priceController.text);
                     if (name != null && price != null) {
                       if (action == 'create') {
                         // Persist a new product to Firestore
-                        await _productss.add({"name": name, "price": price});
+                        await _productss.add({"name": name, "price": price, "cantidad":cantidad});
                       }
 
                       if (action == 'update') {
                         // Update the product
                         await _productss
                             .doc(documentSnapshot!.id)
-                            .update({"name": name, "price": price});
+                            .update({"name": name, "price": price, "cantidad":cantidad});
                       }
 
                       // Clear the text fields
                       _nameController.text = '';
                       _priceController.text = '';
+                      _cantidadController.text="";
 
                       // Hide the bottom sheet
                       Navigator.of(context).pop();
@@ -132,6 +148,7 @@ class _HomePageState extends State<HomePage> {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('You have successfully deleted a product')));
   }
+final User = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -146,9 +163,9 @@ class _HomePageState extends State<HomePage> {
 drawer: Drawer(
         child: ListView(
           children: <Widget>[
-             const UserAccountsDrawerHeader(
+              UserAccountsDrawerHeader(
               accountName: Text("Hayberth"),
-              accountEmail: Text("Hayberth@gmail.com"),
+              accountEmail: Text(User!.email.toString()),
               currentAccountPicture: CircleAvatar(
                 backgroundImage: NetworkImage(
                     "https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"),
@@ -175,8 +192,8 @@ drawer: Drawer(
               leading: const Icon(Icons.settings),
               title: const Text("Perfil"),
               onTap: () {
-                // Navigator.push(context,
-                // MaterialPageRoute(builder: (context) =>  EditarPerfil()));
+                 Navigator.push(context,
+                 MaterialPageRoute(builder: (context) =>  EditarPerfil()));
               },
             ),
           
@@ -213,13 +230,26 @@ drawer: Drawer(
                 final DocumentSnapshot documentSnapshot =
                     streamSnapshot.data!.docs[index];
                 return Card(
-                  margin: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10.0),
                   child: ListTile(
-                    title: Text(documentSnapshot['name']),
-                    subtitle: Text(documentSnapshot['price'].toString()),
+                    title: Column(
+                      
+                      children: [
+                    
+                        Text('Nombre:${documentSnapshot['name']}', style: TextStyle(fontSize: 16),),
+
+                        Text('Precio:${documentSnapshot["price"].toString()}', style: TextStyle(fontSize: 16),),
+                      
+                        Text('Cantidad:${documentSnapshot['cantidad'].toString()}', style: TextStyle(fontSize: 16),),
+
+                        
+                      ],
+                    ),
+                    
                     trailing: SizedBox(
-                      width: 100,
+                      width: 195,
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           // Press this button to edit a single product
                           IconButton(

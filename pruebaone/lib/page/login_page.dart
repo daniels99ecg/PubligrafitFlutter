@@ -79,7 +79,7 @@ signInWithEmailAndPassword() async{
                       }
                       return null;
                     },
-                    decoration: const InputDecoration(labelText: "Email"),
+                    decoration: const InputDecoration(labelText: "Correo"),
                   ),
                   TextFormField(
                     controller: _password,
@@ -89,8 +89,9 @@ signInWithEmailAndPassword() async{
                       }
                       return null;
                     },
-                    decoration: const InputDecoration(labelText: "Password"),
+                    decoration: const InputDecoration(labelText: "Contraseña"),
                   ),
+                  SizedBox(height: 16,),
                   SizedBox(
                     width: double.infinity,
                     height: 45,
