@@ -1,13 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:pruebaone/page/prueba.dart';
-import 'package:pruebaone/page/sign_up_page.dart';
+
+
+import 'main.dart';
 import 'profile.dart';
 
 
-import '../firebase_options.dart';
+import 'firebase_options.dart';
 
 
 
@@ -148,7 +148,7 @@ class _HomePageState extends State<HomePage> {
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('You have successfully deleted a product')));
   }
-final User = FirebaseAuth.instance.currentUser;
+
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +165,7 @@ drawer: Drawer(
           children: <Widget>[
               UserAccountsDrawerHeader(
               accountName: Text("Hayberth"),
-              accountEmail: Text(User!.email.toString()),
+              accountEmail: Text('correo'),
               currentAccountPicture: CircleAvatar(
                 backgroundImage: NetworkImage(
                     "https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"),
@@ -207,8 +207,9 @@ drawer: Drawer(
                 
                 leading: const Icon(Icons.logout_sharp),
                 title: const Text("Cerrar Sesión"),
-               onTap: () async{
-                await FirebaseAuth.instance.signOut();
+               onTap: (){
+              Navigator.push(context,
+                MaterialPageRoute(builder: (context) =>   MyLoginPage(title: 'Login',)));
                },
                          ),
             

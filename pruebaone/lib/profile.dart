@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pruebaone/page/home_page.dart';
+import 'package:pruebaone/home_page.dart';
+
+import 'main.dart';
 
 
 
@@ -32,6 +35,7 @@ class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key, required this.title});
   final String title;
 
+
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
@@ -44,8 +48,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   String _password = '';
 
-final User = FirebaseAuth.instance.currentUser;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +56,7 @@ final User = FirebaseAuth.instance.currentUser;
           children: <Widget>[
               UserAccountsDrawerHeader(
               accountName: Text("Hayberth"),
-              accountEmail:Text(User!.email.toString()),
+              accountEmail:Text('correo'),
               currentAccountPicture: CircleAvatar(
                 backgroundImage: NetworkImage(
                     "https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"),
@@ -74,7 +76,7 @@ final User = FirebaseAuth.instance.currentUser;
               title: const Text("Compras"),
               onTap: () {
                   Navigator.push(context,
-                              MaterialPageRoute(builder: (context) =>  MyApp()));
+                              MaterialPageRoute(builder: (context) =>  HomePage()));
               },
             ),
              ListTile(
@@ -97,8 +99,9 @@ final User = FirebaseAuth.instance.currentUser;
                 
                 leading: const Icon(Icons.logout_sharp),
                 title: const Text("Cerrar Sesión"),
-                onTap: () async{
-                  await FirebaseAuth.instance.signOut();
+                onTap: (){
+                 Navigator.push(context,
+                MaterialPageRoute(builder: (context) =>   MyLoginPage(title: 'Login',)));
 
                 },
                          ),
@@ -233,7 +236,7 @@ final User = FirebaseAuth.instance.currentUser;
                         padding: const EdgeInsets.only(top: 15),
                         child: TextFormField(
                           decoration: InputDecoration(
-                              hintText: '${User!.email.toString()}',
+                              hintText: 'Nombre',
                               hintStyle:
                                   const TextStyle(fontWeight: FontWeight.w600),
                               fillColor: Colors.grey.shade200,
