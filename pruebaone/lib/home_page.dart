@@ -47,7 +47,7 @@ class _HomePageState extends State<HomePage> {
   // text fields' controllers
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
-    final TextEditingController _cantidadController = TextEditingController();
+  final TextEditingController _cantidadController = TextEditingController();
 
 
   final CollectionReference _productss =
@@ -208,8 +208,8 @@ drawer: Drawer(
                 leading: const Icon(Icons.logout_sharp),
                 title: const Text("Cerrar Sesión"),
                onTap: (){
-              Navigator.push(context,
-                MaterialPageRoute(builder: (context) =>   MyLoginPage(title: 'Login',)));
+              // Navigator.push(context,
+              //   MaterialPageRoute(builder: (context) =>   MyLoginPage(title: 'Login',)));
                },
                          ),
             

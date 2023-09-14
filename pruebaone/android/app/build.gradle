@@ -53,6 +53,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         minSdkVersion localProperties.getProperty("flutter.minSdkVersion").toInteger()
+        multiDexEnabled=true
         
     }
 

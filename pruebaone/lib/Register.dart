@@ -1,20 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pruebaone/home_page.dart';
 
-import 'Login.dart';
 import 'main.dart';
 
 
-
 void main() {
-  runApp(const EditarPerfil());
+  runApp(const MyApp());
 }
 
-
-class EditarPerfil extends StatelessWidget {
-  const EditarPerfil({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
@@ -22,6 +16,7 @@ class EditarPerfil extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+          primarySwatch: Colors.blue,
           fontFamily: 'Raleway',
           ),
       debugShowCheckedModeBanner: false,
@@ -36,13 +31,11 @@ class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key, required this.title});
   final String title;
 
-
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
- 
   SinginCharacter? _sex = SinginCharacter.femenino;
 
   String _nombre = '';
@@ -52,105 +45,45 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-              UserAccountsDrawerHeader(
-              accountName: Text("Hayberth"),
-              accountEmail:Text('correo'),
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: NetworkImage(
-                    "https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"),
-              ),
-             ),
-
- ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text("Home"),
-              onTap: () {
-                  // Navigator.push(context,
-                  //             MaterialPageRoute(builder: (context) =>  Index()));
-              },
-            ),
-               ListTile(
-              leading: const Icon(Icons.add_shopping_cart),
-              title: const Text("Compras"),
-              onTap: () {
-                  Navigator.push(context,
-                              MaterialPageRoute(builder: (context) =>  HomePage()));
-              },
-            ),
-             ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text("Perfil"),
-              onTap: () {
-                Navigator.push(context,
-                MaterialPageRoute(builder: (context) =>  EditarPerfil()));
-                
-              },
-            ),
-          
-
-           Container(
-                color: Colors.black,
-                width: double.infinity,
-                height: 0.1,
-              ),
-                ListTile(
-                
-                leading: const Icon(Icons.logout_sharp),
-                title: const Text("Cerrar Sesión"),
-                onTap: (){
-                 Navigator.pushNamed(
-                  context, 
-                  "/"
-                 
-                );
-
-                },
-                         ),
-            
-
-          ],
-
-        ),
-      ),
-      appBar: AppBar(
-        title:const Text('Editar Perfil'),
-      ),
+      
         body: SingleChildScrollView(
         
       child: Container(
-        margin: const EdgeInsets.only(top: 20, left: 30, right: 30),
+        margin: const EdgeInsets.only(top: 40, left: 30, right: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-           
-            // Container(
-            //   margin: const EdgeInsets.only(top: 5),
+            IconButton(onPressed: (){
+                              // Navigator.push(context,
+                              // MaterialPageRoute(builder: (context) =>  MyLoginPage(title: 'Login',)));
+
+
+                              
+            }, 
+            
+            icon: Icon(Icons.arrow_back_ios),
+            
+            ),
+            Container(
+              margin: const EdgeInsets.only(top: 20),
               
-            //   child: Center(
-            //     child: const Text(
-            //       'Actualizar Perfil',
-                  
-            //       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-            //     ),
-            //   ),
+              child: const Text(
+                'Registrarse',
+                
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+              ),
               
-            // ),
-            SizedBox(height: 8,),
-            Center(child: Image.network("https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg", height: 100,),),
-            Center(child: Text('Editar')),
+            ),
             const Padding(
-              padding: EdgeInsets.symmetric(vertical: 0),
-              child: Text('.'),
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: Text('¡Ya puedes registrarte, bienvenido!'),
             ),
             Form(
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
                     Padding(
-                        padding: const EdgeInsets.only(top: 5),
+                        padding: const EdgeInsets.only(top: 30),
                         child: TextFormField(
                           decoration: InputDecoration(
                               hintText: 'Nombre',
@@ -240,7 +173,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         padding: const EdgeInsets.only(top: 15),
                         child: TextFormField(
                           decoration: InputDecoration(
-                              hintText: 'Nombre',
+                              hintText: 'Correo',
                               hintStyle:
                                   const TextStyle(fontWeight: FontWeight.w600),
                               fillColor: Colors.grey.shade200,
@@ -343,7 +276,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     content: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
-                                      children: <Widget>[
+                                      children: const <Widget>[
                                         Icon(
                                           Icons.check_circle,
                                           color: Color.fromARGB(
@@ -382,7 +315,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 foregroundColor:
                                     Colors.white, // foreground (text) color
                               ),
-                              child: const Text('Actualizar',style: TextStyle(fontSize: 20),)),
+                              child: const Text('Registrarse',style: TextStyle(fontSize: 20),)),
                         )),
                   ],
                 ))
