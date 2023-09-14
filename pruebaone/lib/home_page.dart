@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pruebaone/Login.dart';
 
 
 import 'main.dart';
-import 'profile.dart';
+
 
 
 import 'firebase_options.dart';
@@ -164,8 +165,8 @@ drawer: Drawer(
         child: ListView(
           children: <Widget>[
               UserAccountsDrawerHeader(
-              accountName: Text("Hayberth"),
-              accountEmail: Text('correo'),
+              accountName: Text("Daniel"),
+              accountEmail: Text('danielsenju1999@gmail.com'),
               currentAccountPicture: CircleAvatar(
                 backgroundImage: NetworkImage(
                     "https://static.vecteezy.com/system/resources/previews/000/439/863/original/vector-users-icon.jpg"),
@@ -191,10 +192,11 @@ drawer: Drawer(
              ListTile(
               leading: const Icon(Icons.settings),
               title: const Text("Perfil"),
-              onTap: () {
-                 Navigator.push(context,
-                 MaterialPageRoute(builder: (context) =>  EditarPerfil()));
-              },
+               onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    "/perfil");
+               },
             ),
           
 
@@ -208,8 +210,8 @@ drawer: Drawer(
                 leading: const Icon(Icons.logout_sharp),
                 title: const Text("Cerrar Sesión"),
                onTap: (){
-              // Navigator.push(context,
-              //   MaterialPageRoute(builder: (context) =>   MyLoginPage(title: 'Login',)));
+              Navigator.push(context,
+                 MaterialPageRoute(builder: (context) =>   MyLoginPage(title: 'Login',)));
                },
                          ),
             

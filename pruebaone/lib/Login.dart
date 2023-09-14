@@ -6,7 +6,6 @@ import 'package:pruebaone/home_page.dart';
 
 import 'firebase_options.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -14,8 +13,6 @@ void main() async {
   );
   runApp(const MyApp());
 }
-
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -48,71 +45,56 @@ class _MyLoginPageState extends State<MyLoginPage> {
   final TextEditingController _controller1 = TextEditingController();
   final TextEditingController _controller2 = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  
-  validarDatos()async{
-     try{
-      CollectionReference ref= FirebaseFirestore.instance.collection('users');
-      QuerySnapshot usuario=await ref.get();
-      
-      if(usuario.docs.length!=0){
-       for(var cursor in usuario.docs){
-        
-        if(cursor.get('email')==_controller1.text&&cursor.get('password')==_controller2.text){
 
-         Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                               HomePage(
-                                             
-                                              )),
-                                    );
+  validarDatos() async {
+    try {
+      CollectionReference ref = FirebaseFirestore.instance.collection('users');
+      QuerySnapshot usuario = await ref.get();
+
+      if (usuario.docs.length != 0) {
+        for (var cursor in usuario.docs) {
+          if (cursor.get('email') == _controller1.text &&
+              cursor.get('password') == _controller2.text) {
+            Navigator.pushNamed(
+              context, "/home"
+              
+            );
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: const <Widget>[
+                  Icon(
+                    Icons.warning_rounded,
+                    color: Color.fromARGB(255, 255, 255, 255),
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    "No hay datos registrados",
+                    style: TextStyle(color: Color.fromARGB(255, 255, 255, 255)),
+                  )
+                ],
+              ),
+              duration: const Duration(milliseconds: 2000),
+              width: 300,
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(3.0),
+              ),
+              backgroundColor: Colors.red,
+            ));
+          }
         }
-      else{
-         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                      content: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: const <Widget>[
-                                          Icon(
-                                            Icons.warning_rounded,
-                                            color: Color.fromARGB(
-                                                255, 255, 255, 255),
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            "No hay datos registrados",
-                                            style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 255, 255, 255)),
-                                          )
-                                        ],
-                                      ),
-                                      duration:
-                                          const Duration(milliseconds: 2000),
-                                      width: 300,
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0, vertical: 10),
-                                      behavior: SnackBarBehavior.floating,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(3.0),
-                                      ),
-                                      backgroundColor: Colors.red,
-                                    ));
-        }
-       }
       }
-      }catch(e){
-       
-       print('ERROR...'+e.toString());
+    } catch (e) {
+      print('ERROR...' + e.toString());
+    }
+  }
 
-      }
-     }
-
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,10 +104,17 @@ class _MyLoginPageState extends State<MyLoginPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-              SizedBox(height: 90,),
-                  Image.network('http://drive.google.com/uc?export=view&id=1Zu2cm69lPkIEu09fqA4wA1B3BTL88v1w', height: 100,),
-                const Text('Iniciar Sesión', style: TextStyle(fontSize: 25),),
-           
+            SizedBox(
+              height: 90,
+            ),
+            Image.network(
+              'http://drive.google.com/uc?export=view&id=1Zu2cm69lPkIEu09fqA4wA1B3BTL88v1w',
+              height: 100,
+            ),
+            const Text(
+              'Iniciar Sesión',
+              style: TextStyle(fontSize: 25),
+            ),
             Form(
                 key: _formKey,
                 child: Column(
@@ -190,10 +179,9 @@ class _MyLoginPageState extends State<MyLoginPage> {
                           child: ElevatedButton(
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                validarDatos();
+                                  validarDatos();
                                 }
                               },
-                             
                               child: const Text('Iniciar sesión')),
                         )),
                     Row(
@@ -201,9 +189,12 @@ class _MyLoginPageState extends State<MyLoginPage> {
                         const Text('¿No tienes una cuenta?'),
                         TextButton(
                             onPressed: () {
-                               Navigator.push(context,
-                               MaterialPageRoute(builder: (context) =>  RegisterPage(title: 'Register',)));
+                               Navigator.pushNamed(context, "/register"
+                               );
                             },
+                            // onPressed: () {
+                            //   Navigator.pushNamed(context, "/perfil");
+                            // },
                             child: const Text(
                               'Registrarse',
                               style: TextStyle(
@@ -220,9 +211,3 @@ class _MyLoginPageState extends State<MyLoginPage> {
     ));
   }
 }
-
-
-
-
-
-
