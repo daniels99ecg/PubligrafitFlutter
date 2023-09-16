@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:mailer/mailer.dart';
+import 'package:mailer/smtp_server/gmail.dart';
 
+import 'firebase-services.dart';
 import 'main.dart';
-
 
 void main() {
   runApp(const MyApp());
@@ -16,9 +18,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-          primarySwatch: Colors.blue,
-          fontFamily: 'Raleway',
-          ),
+        primarySwatch: Colors.blue,
+        fontFamily: 'Raleway',
+      ),
       debugShowCheckedModeBanner: false,
       home: const RegisterPage(title: 'Flutter Demo Home Page'),
     );
@@ -42,37 +44,33 @@ class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   String _password = '';
 
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
         body: SingleChildScrollView(
-        
       child: Container(
         margin: const EdgeInsets.only(top: 40, left: 30, right: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            IconButton(onPressed: (){
-                              // Navigator.push(context,
-                              // MaterialPageRoute(builder: (context) =>  MyLoginPage(title: 'Login',)));
-
-
-                              
-            }, 
-            
-            icon: Icon(Icons.arrow_back_ios),
-            
+            IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/");
+              },
+              icon: Icon(Icons.arrow_back_ios),
             ),
             Container(
               margin: const EdgeInsets.only(top: 20),
-              
               child: const Text(
                 'Registrarse',
-                
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
               ),
-              
             ),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 10),
@@ -85,6 +83,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     Padding(
                         padding: const EdgeInsets.only(top: 30),
                         child: TextFormField(
+                          controller: _firstNameController,
                           decoration: InputDecoration(
                               hintText: 'Nombre',
                               hintStyle:
@@ -114,6 +113,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     Padding(
                         padding: const EdgeInsets.only(top: 15),
                         child: TextFormField(
+                          controller: _lastNameController,
                           decoration: InputDecoration(
                               hintText: 'Apellidos',
                               hintStyle:
@@ -136,42 +136,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         )),
                     Padding(
                         padding: const EdgeInsets.only(top: 15),
-                        child: Row(
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Radio<SinginCharacter>(
-                                  value: SinginCharacter.femenino,
-                                  groupValue: _sex,
-                                  onChanged: (SinginCharacter? value) {
-                                    setState(() {
-                                      _sex = value;
-                                    });
-                                  },
-                                ),
-                                const Text('Femenino')
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Radio<SinginCharacter>(
-                                  value: SinginCharacter.masculino,
-                                  groupValue: _sex,
-                                  onChanged: (SinginCharacter? value) {
-                                    setState(() {
-                                      _sex = value;
-                                    });
-                                  },
-                                ),
-                                const Text('Masculino')
-                              ],
-                            ),
-                          ],
-                        )),
-                    Padding(
-                        padding: const EdgeInsets.only(top: 15),
                         child: TextFormField(
+                          controller: _emailController,
                           decoration: InputDecoration(
                               hintText: 'Correo',
                               hintStyle:
@@ -202,6 +168,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     Padding(
                         padding: const EdgeInsets.only(top: 15),
                         child: TextFormField(
+                          controller: _passwordController,
                           obscureText: true,
                           onChanged: (value) {
                             setState(() {
@@ -224,7 +191,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               filled: true),
                           validator: (value) {
                             String pattern =
-                                r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$';
+                                r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{3,}$';
                             RegExp regExp = RegExp(pattern);
                             if (value!.isEmpty) {
                               return "La contraseña es necesaria";
@@ -269,8 +236,23 @@ class _RegisterPageState extends State<RegisterPage> {
                           width: double.infinity,
                           height: 45,
                           child: ElevatedButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
+                                  final firstName = _firstNameController.text;
+                                  final lastName = _lastNameController.text;
+                                  final age = _ageController.text;
+                                  final email = _emailController.text;
+                                  final password = _passwordController.text;
+                                  await adUsers(firstName, lastName, age, email,
+                                      password).then((_) => _enviarCorreo(_emailController.text));
+                                  Navigator.pushNamed(context, "/");
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content:
+                                          Text('Usuario agregado con éxito'),
+                                    ),
+                                  );
+
                                   ScaffoldMessenger.of(context)
                                       .showSnackBar(SnackBar(
                                     content: Row(
@@ -305,17 +287,18 @@ class _RegisterPageState extends State<RegisterPage> {
                                     backgroundColor:
                                         const Color.fromARGB(255, 12, 195, 106),
                                   ));
-                                  
-                                  
                                 }
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Color.fromARGB(255, 67, 67, 248), // background (button) color
+                                backgroundColor: Color.fromARGB(255, 67, 67,
+                                    248), // background (button) color
                                 foregroundColor:
                                     Colors.white, // foreground (text) color
                               ),
-                              child: const Text('Registrarse',style: TextStyle(fontSize: 20),)),
+                              child: const Text(
+                                'Registrarse',
+                                style: TextStyle(fontSize: 20),
+                              )),
                         )),
                   ],
                 ))
@@ -325,3 +308,37 @@ class _RegisterPageState extends State<RegisterPage> {
     ));
   }
 }
+
+Future<void> _enviarCorreo(String recipientEmail) async {
+    String username = 'decruz82@misena.edu.co'; // Reemplaza con tu dirección de correo
+    String password = 'uphxfykntnmhxcut'; // Reemplaza con tu contraseña de correo
+
+    final smtpServer = gmail(username, password);
+
+    // Create our message.
+    final message = Message()
+      ..from = Address(username, 'Automático')
+      ..recipients.add(recipientEmail)
+      ..ccRecipients.addAll([recipientEmail, recipientEmail])
+      ..bccRecipients.add(Address(recipientEmail))
+      ..subject = '¡Bienvenido a la aplicación!'
+      ..html = 'Hola, $recipientEmail, ¡te has registrado en nuestra aplicación!';
+
+    try {
+      final sendReport = await send(message, smtpServer);
+      print('Message sent: ' + sendReport.toString());
+    } on MailerException catch (e) {
+      print('Message not sent.');
+      for (var p in e.problems) {
+        print('Problem: ${p.code}: ${p.msg}');
+      }
+    }
+
+    var connection = PersistentConnection(smtpServer);
+
+    // Send the first message
+    await connection.send(message);
+
+    // Close the connection
+    await connection.close();
+ } 

@@ -14,7 +14,7 @@ class _MyPerfilState extends State<MyPerfil> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Perfiles'),
+        title: Text('Listado de lo Perfiles'),
       ),
       body: FutureBuilder(
         future: getPerfil(),
@@ -33,9 +33,12 @@ class _MyPerfilState extends State<MyPerfil> {
                 final perfil = perfiles[index];
                 return ListTile(
                   title: Text('Nombre: ${perfil["firstname"]} ${perfil["lastname"]}'),
-                  subtitle: Text('Edad: ${perfil["age"]} - Email: ${perfil["email"]} password: ${perfil["password"]}'),
+                  subtitle: Text('Edad: ${perfil["age"]} - Correo: ${perfil["email"]} Contraseña: ${perfil["password"]}'),
+                 
+                 
                   onTap: () async {
-                    await Navigator.pushNamed(context, "/edit", arguments: {
+                    await Navigator.pushNamed(context,
+                     "/edit", arguments: {
                       "uid": perfil["uid"],
                       "firstname": perfil["firstname"],
                       "lastname": perfil["lastname"],

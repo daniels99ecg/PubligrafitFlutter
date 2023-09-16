@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pruebaone/Login.dart';
 import 'package:pruebaone/editPerfil.dart';
 import 'package:pruebaone/home_page.dart';
-import 'package:pruebaone/registerUsers.dart';
+import 'package:pruebaone/register.dart';
 
 import 'firebase_options.dart';
 import 'miPeril.dart';
@@ -38,7 +38,7 @@ class _MyAppState extends State<MyApp> {
          "/perfil": (context) => const MyPerfil(),
          "/edit": (context) => const EditProfile(),
          "/home":(context)=> const HomePage(),
-         "/register":(context)=>  AddUserView(),
+         "/register":(context)=>  RegisterPage(title: "Registrar",),
       },
     );
   }

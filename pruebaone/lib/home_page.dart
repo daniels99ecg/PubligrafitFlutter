@@ -1,16 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pruebaone/Login.dart';
 
-
 import 'main.dart';
 
-
-
 import 'firebase_options.dart';
-
-
 
 
 void main() async {
@@ -22,7 +18,6 @@ void main() async {
 }
 
 
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -31,7 +26,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       // Remove the debug banner
       debugShowCheckedModeBanner: false,
-      title: 'Compras',
+      title: 'Listado de Compras',
       home: HomePage(),
     );
   }
@@ -54,9 +49,7 @@ class _HomePageState extends State<HomePage> {
   final CollectionReference _productss =
       FirebaseFirestore.instance.collection('products');
 
-  // This function is triggered when the floatting button or one of the edit buttons is pressed
-  // Adding a product if no documentSnapshot is passed
-  // If documentSnapshot != null then update an existing product
+
   Future<void> _createOrUpdate([DocumentSnapshot? documentSnapshot]) async {
     String action = 'create';
     if (documentSnapshot != null) {
@@ -75,7 +68,7 @@ class _HomePageState extends State<HomePage> {
                 top: 20,
                 left: 20,
                 right: 20,
-                // prevent the soft keyboard from covering text fields
+                
                 bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -83,19 +76,19 @@ class _HomePageState extends State<HomePage> {
               children: [
                 TextField(
                   controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Name'),
+                  decoration: const InputDecoration(labelText: 'Nombre'),
                 ),
                 TextField(
                   keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
+                      const TextInputType.numberWithOptions(decimal: false),
                   controller: _priceController,
                   decoration: const InputDecoration(
-                    labelText: 'Price',
+                    labelText: 'Precio',
                   ),
                 ),
                   TextField(
                   keyboardType:
-                      const TextInputType.numberWithOptions(decimal: true),
+                      const TextInputType.numberWithOptions(decimal: false),
                   controller: _cantidadController,
                   decoration: const InputDecoration(
                     labelText: 'Cantidad',
@@ -111,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                     final double? price =
                         double.tryParse(_priceController.text);
                     final double? cantidad=
-                        double.tryParse(_priceController.text);
+                        double.tryParse(_cantidadController.text);
                     if (name != null && price != null) {
                       if (action == 'create') {
                         // Persist a new product to Firestore
@@ -141,11 +134,11 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-  // Deleteing a product by id
+  
   Future<void> _deleteProduct(String productId) async {
     await _productss.doc(productId).delete();
 
-    // Show a snackbar
+    
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('You have successfully deleted a product')));
   }
@@ -155,7 +148,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Compras'),
+        title: const Text('Listado de Compras'),
       ),
       
 
@@ -164,6 +157,7 @@ class _HomePageState extends State<HomePage> {
 drawer: Drawer(
         child: ListView(
           children: <Widget>[
+            
               UserAccountsDrawerHeader(
               accountName: Text("Daniel"),
               accountEmail: Text('danielsenju1999@gmail.com'),
@@ -184,8 +178,10 @@ drawer: Drawer(
               leading: const Icon(Icons.add_shopping_cart),
               title: const Text("Compras"),
               onTap: () {
-                //  Navigator.push(context,
-                //               MaterialPageRoute(builder: (context) =>  Compras()));
+                  Navigator.pushNamed(context,
+                  "/home"
+                  );
+         
 
               },
             ),
@@ -210,8 +206,10 @@ drawer: Drawer(
                 leading: const Icon(Icons.logout_sharp),
                 title: const Text("Cerrar Sesión"),
                onTap: (){
-              Navigator.push(context,
-                 MaterialPageRoute(builder: (context) =>   MyLoginPage(title: 'Login',)));
+              Navigator.pushNamed(context,
+              "/"
+              );
+                
                },
                          ),
             
@@ -232,6 +230,10 @@ drawer: Drawer(
               itemBuilder: (context, index) {
                 final DocumentSnapshot documentSnapshot =
                     streamSnapshot.data!.docs[index];
+
+
+                 final int  result=(documentSnapshot["price"].toInt()* documentSnapshot["cantidad"].toInt());
+
                 return Card(
                   margin: const EdgeInsets.all(10.0),
                   child: ListTile(
@@ -245,6 +247,7 @@ drawer: Drawer(
                       
                         Text('Cantidad:${documentSnapshot['cantidad'].toString()}', style: TextStyle(fontSize: 16),),
 
+                         Text('Total: ${result.toString()}'),
                         
                       ],
                     ),
