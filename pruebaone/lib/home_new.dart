@@ -17,19 +17,19 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Listado de Compras',
-      home: HomePage(),
+      home: HomePageNew(),
     );
   }
 }
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePageNew extends StatefulWidget {
+  const HomePageNew({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePageNew> createState() => _HomePageNewState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageNewState extends State<HomePageNew> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _cantidadController = TextEditingController();
@@ -229,7 +229,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Listado de Compras'),
+        title: const Text('PubliGrafit'),
       ),
       drawer: Drawer(
         child: ListView(
@@ -246,11 +246,10 @@ class _HomePageState extends State<HomePage> {
               leading: const Icon(Icons.home),
               title: const Text("Home"),
               onTap: () {
-                 Navigator.pushNamed(
+                           Navigator.pushNamed(
                   context,
                  "/Homeprincipal"
                  );
-                           
               },
             ),
             ListTile(
@@ -291,76 +290,86 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: StreamBuilder(
-  stream: FirebaseFirestore.instance.collection('compras').snapshots(),
-  builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-    if (streamSnapshot.hasData) {
-      final List<QueryDocumentSnapshot> documentos = streamSnapshot.data!.docs;
-
-      return ListView.builder(
-        itemCount: documentos.length,
-        itemBuilder: (context, index) {
-          final DocumentSnapshot documentSnapshot = documentos[index];
-          final compraProductos = documentSnapshot['productos'];
-
-          double subtotal = 0.0;
-          double iva = 0.0;
-
-          // Calcular subtotal y IVA
-          for (final producto in compraProductos) {
-            double price = producto['price'] as double;
-            double cantidad = producto['cantidad'] as double;
-            subtotal += price * cantidad;
-          }
-
-          // Calcular IVA (19%)
-          iva = subtotal * 0.19;
-
-          return Card(
-            margin: const EdgeInsets.all(10.0),
-            child: ListTile(
-              title: Column(
-                children: [
+      body: Center(
+          child: Column(
+            children: [
+              Card(
+                 color: Color.fromARGB(255, 238, 237, 237),
+                  child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                    children:<Widget> [
+                      ListTile(
+                        title: Column(
+                          children: [
+                        Image.network(
+                  'http://drive.google.com/uc?export=view&id=1Zu2cm69lPkIEu09fqA4wA1B3BTL88v1w',
+                  height: 100,
+                ),
+                            Text('Bienvenido a la App de Publigrafit' , style: TextStyle(fontWeight: FontWeight.bold),),
+                             
+                          ],
+                        ),
+                      ),
+                     
+                    ],
                   
-                  Text('Productos:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                  for (final producto in compraProductos)
-                    Text(
-                        'Nombre: ${producto['name']}, \nPrecio: \$${producto['price']}, \nCantidad: ${producto['cantidad']}\n',
-                        style: TextStyle(fontSize: 16)),
-                        
-
-                       Text('Subtotal: \$${subtotal.toStringAsFixed(2)}',
-                      style: TextStyle(fontSize: 16)),
-                  Text('IVA (19%): \$${iva.toStringAsFixed(2)}',
-                      style: TextStyle(fontSize: 16)),
-                  Text('Total: \$${documentSnapshot['total'].toStringAsFixed(2)}',
-                      style: TextStyle(fontSize: 16)), 
-                        
-                      
-                      ],
-                    ),
                   ),
-                );
-              },
-            );
-          }
+              ),
 
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
+                  Card(
+                 color: Color.fromARGB(255, 238, 237, 237),
+                  child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                    children:<Widget> [
+                      ListTile(
+                        title: Column(
+                          children: [
+                        Image.network(
+                  'https://img.freepik.com/iconos-gratis/carrito-compras_318-869187.jpg?w=2000',
+                  height: 100,
+                ),
+                            Text('Las compras las puedes realizar por este medio' , style: TextStyle(fontWeight: FontWeight.bold),),
+                             
+                          ],
+                        ),
+                      ),
+                     
+                    ],
+                  
+                  ),
+              ),
+
+
+
+ Card(
+                 color: Color.fromARGB(255, 238, 237, 237),
+                  child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                    children:<Widget> [
+                      ListTile(
+                        title: Column(
+                          children: [
+                        Image.network(
+                  'https://cdn-icons-png.flaticon.com/512/1600/1600225.png',
+                  height: 100,
+                ),
+                            Text('Puedes ver el listado de tus compras' , style: TextStyle(fontWeight: FontWeight.bold),),
+                             
+                          ],
+                        ),
+                      ),
+                     
+                    ],
+                  
+                  ),
+              ),
+            ],
+
+          ), 
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _createOrUpdate(),
-        child: const Icon(Icons.add),
-      ),
+      
+      
     );
   }
 
-  Future<void> _deleteProduct(String productId) async {
-    await _productss.doc(productId).delete();
-
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('You have successfully deleted a product')));
-  }
 }

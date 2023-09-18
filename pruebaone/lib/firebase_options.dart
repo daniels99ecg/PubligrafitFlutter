@@ -44,37 +44,42 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDyy0NDmHvBexahRTeU8LtZLl_uAoc4fnY',
-    appId: '1:729601043390:web:4c4d11c96047613133a7ef',
-    messagingSenderId: '729601043390',
-    projectId: 'fluttertest-7d29f',
-    authDomain: 'fluttertest-7d29f.firebaseapp.com',
-    storageBucket: 'fluttertest-7d29f.appspot.com',
+    apiKey: 'AIzaSyChditYKOapAEeFDnXxGOuAftS4KaJRozM',
+    appId: '1:745013073848:web:8115df23950ede9574a14d',
+    messagingSenderId: '745013073848',
+    projectId: 'lassy-661fb',
+    authDomain: 'lassy-661fb.firebaseapp.com',
+    databaseURL: 'https://lassy-661fb-default-rtdb.firebaseio.com',
+    storageBucket: 'lassy-661fb.appspot.com',
+    measurementId: 'G-MWK12VV04V',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAFF_qzaItU24HqxmTe5F42vkAY7oe2XbA',
-    appId: '1:729601043390:android:94b5fd3883cbd3e533a7ef',
-    messagingSenderId: '729601043390',
-    projectId: 'fluttertest-7d29f',
-    storageBucket: 'fluttertest-7d29f.appspot.com',
+    apiKey: 'AIzaSyBSscrFfDN0-eTouypyKrpe35jphKmly9g',
+    appId: '1:745013073848:android:72b0fbc2d950b6ab74a14d',
+    messagingSenderId: '745013073848',
+    projectId: 'lassy-661fb',
+    databaseURL: 'https://lassy-661fb-default-rtdb.firebaseio.com',
+    storageBucket: 'lassy-661fb.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBeZxq4BHYdXEWonx6XiDVKgCmutXwSbAo',
-    appId: '1:729601043390:ios:ffd627774f57bc9633a7ef',
-    messagingSenderId: '729601043390',
-    projectId: 'fluttertest-7d29f',
-    storageBucket: 'fluttertest-7d29f.appspot.com',
+    apiKey: 'AIzaSyA-_qbB8RnloiZOctAfd1K2pHLnnS7aGh8',
+    appId: '1:745013073848:ios:c5486cc4a6fe893e74a14d',
+    messagingSenderId: '745013073848',
+    projectId: 'lassy-661fb',
+    databaseURL: 'https://lassy-661fb-default-rtdb.firebaseio.com',
+    storageBucket: 'lassy-661fb.appspot.com',
     iosBundleId: 'com.example.pruebaone',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBeZxq4BHYdXEWonx6XiDVKgCmutXwSbAo',
-    appId: '1:729601043390:ios:5a172950f629b96233a7ef',
-    messagingSenderId: '729601043390',
-    projectId: 'fluttertest-7d29f',
-    storageBucket: 'fluttertest-7d29f.appspot.com',
+    apiKey: 'AIzaSyA-_qbB8RnloiZOctAfd1K2pHLnnS7aGh8',
+    appId: '1:745013073848:ios:871dbe4c339b5f5974a14d',
+    messagingSenderId: '745013073848',
+    projectId: 'lassy-661fb',
+    databaseURL: 'https://lassy-661fb-default-rtdb.firebaseio.com',
+    storageBucket: 'lassy-661fb.appspot.com',
     iosBundleId: 'com.example.pruebaone.RunnerTests',
   );
 }

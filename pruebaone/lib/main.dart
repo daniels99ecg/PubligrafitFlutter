@@ -7,6 +7,7 @@ import 'package:pruebaone/home_page.dart';
 import 'package:pruebaone/register.dart';
 
 import 'firebase_options.dart';
+import 'home_new.dart';
 import 'miPeril.dart';
 
 
@@ -38,6 +39,7 @@ class _MyAppState extends State<MyApp> {
          "/perfil": (context) => const MyPerfil(),
          "/edit": (context) => const EditProfile(),
          "/home":(context)=> const HomePage(),
+         "/Homeprincipal": (context)=> HomePageNew(),
          "/register":(context)=>  RegisterPage(title: "Registrar",),
       },
     );
